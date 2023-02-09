@@ -1,14 +1,11 @@
-# Practice-Multithreading
-​CPP_Multithreaded_Practice_RecursiveLock ​
+# Concurrent programming in C++
 
-A recursive mutex in C++ is a type of mutex (short for "mutual exclusion") that allows the same thread to lock it multiple times, whereas a non-recursive mutex will deadlock if the same thread tries to lock it more than once.
 
-A mutex is used in multithreaded programming to ensure that only one thread at a time can access a shared resource, such as a data structure or a file, to prevent race conditions and other synchronization issues. By allowing the same thread to lock a recursive mutex multiple times, it allows the thread to perform a series of operations that require exclusive access to the resource, without having to worry about releasing the lock prematurely.
+"try_lock" is a valuable tool in multithreaded programming because it provides a way to handle situations where a lock may not be available. For example, if a critical section of code is protected by a mutex, and several threads try to access that section simultaneously, only one of them will be able to lock the mutex and execute the code. The other threads will be blocked until the lock becomes available.
 
-In C++, you can create a recursive mutex using std::recursive_mutex. To use it, you lock the mutex using lock() method and release it using unlock().
+However, if a thread uses "try_lock" to attempt to acquire the lock, it will immediately return a Boolean value indicating whether the lock was acquired or not. If the lock was not acquired, the thread can continue to do something else, without waiting for the lock to become available. This can be useful in situations where the thread is not dependent on the results of the critical section, and can continue to do other work in the meantime.
+In C++, "try_lock" is typically implemented using the try_lock member function of a mutex class, such as std::mutex or std::timed_mutex.
+It's important to note that "try_lock" is not a blocking operation, so it does not prevent other threads from executing. It simply provides a way for a thread to determine whether a lock is available or not.
+A practical use case for "try_lock" is when a thread wants to access a shared resource but it's not critical for the thread to do so immediately. For example, consider a program where multiple threads are trying to increment a counter. The counter is a shared resource that needs to be protected so that multiple threads do not access it simultaneously and cause race conditions.
 
-Until the lock count of a recursive mutex reaches zero, meaning that all locks have been released, no other thread can access the resource protected by the mutex. This ensures that the shared resource can only be accessed by one thread at a time, avoiding synchronization problems and race conditions.
-
-Each time a thread locks a recursive mutex, the lock count is incremented, and each time the thread unlocks the mutex, the lock count is decremented. The mutex is only released when the lock count reaches zero, meaning that all locks have been released. At this point, other threads are free to lock the mutex and access the shared resource.
-
-In this way, a recursive mutex provides exclusive access to a shared resource, ensuring that multiple threads can access the resource safely and efficiently, even if the same thread needs to lock and unlock the mutex multiple times.
+In this scenario, a thread can use "try_lock" to attempt to lock the mutex that protects the counter. If the lock is acquired, the thread can increment the counter and release the lock. However, if the lock is not acquired, the thread can choose to do something else, rather than waiting for the lock to become available.
