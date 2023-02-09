@@ -1,4 +1,4 @@
-# Concurrent programming 
+# Concurrent programming in C++
 
 
 "try_lock" is a valuable tool in multithreaded programming because it provides a way to handle situations where a lock may not be available. For example, if a critical section of code is protected by a mutex, and several threads try to access that section simultaneously, only one of them will be able to lock the mutex and execute the code. The other threads will be blocked until the lock becomes available.
